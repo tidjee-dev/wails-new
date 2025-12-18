@@ -36,7 +36,7 @@ jobs:
           echo "Next tag: $NEXT_TAG"
 
           # Save as output for other jobs
-          echo "::set-output name=NEXT_TAG::$NEXT_TAG"
+          echo "NEXT_TAG=$NEXT_TAG" >> $GITHUB_OUTPUT
 
           # Push tag
           git tag $NEXT_TAG
