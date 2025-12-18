@@ -1,79 +1,48 @@
-name: Build & Release
+name: Auto Release
 
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
-  build:
-    name: Build CLI Binaries
+  release:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [linux, windows, macos]
-        arch: [amd64, arm64]
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Set up Go
+      - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: 1.25.1
 
-      - name: Calculate next version
-        id: tag
+      - name: Compute next tag
+        id: version
         run: |
-          LAST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+          git fetch --tags
+
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           echo "Last tag: $LAST_TAG"
 
           IFS='.' read -r MAJOR MINOR PATCH <<< "${LAST_TAG#v}"
           PATCH=$((PATCH + 1))
           NEXT_TAG="v$MAJOR.$MINOR.$PATCH"
 
-          echo "Next tag: $NEXT_TAG"
+          echo "NEXT_TAG=$NEXT_TAG" >> $GITHUB_ENV
 
-          # Save as output for other jobs
-          echo "NEXT_TAG=$NEXT_TAG" >> $GITHUB_OUTPUT
-
-          # Push tag
+      - name: Push tag
+        run: |
           git tag $NEXT_TAG
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/tidjee-dev/wails-new.git $NEXT_TAG
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git $NEXT_TAG
 
-      - name: Set environment
-        run: |
-          echo "BINARY_NAME=wails-new" >> $GITHUB_ENV
-
-      - name: Build binary
-        run: |
-          mkdir -p dist/${{ matrix.os }}-${{ matrix.arch }}
-          GOOS=${{ matrix.os }}
-          GOARCH=${{ matrix.arch }}
-          go build -o dist/${{ matrix.os }}-${{ matrix.arch }}/$BINARY_NAME .
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.os }}-${{ matrix.arch }}-binaries
-          path: dist/${{ matrix.os }}-${{ matrix.arch }}/
-
-    outputs:
-      NEXT_TAG: ${{ steps.tag.outputs.NEXT_TAG }}
-
-  release:
-    name: Create GitHub Release
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: dist
-
-      - name: Create Release
-        id: create_release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.NEXT_TAG }}
@@ -81,9 +50,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
-      - name: Upload release assets
-        uses: softprops/action-gh-release@v1
+      - name: Build & upload Go binaries
+        uses: wangyoucao577/go-release-action@v1
         with:
-          files: dist/**/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          github_token: ${{ secrets.GH_PAT }}
+          goos: linux,darwin,windows
+          goarch: amd64,arm64
+          binary_name: wails-new
+          project_path: .
+          compress_assets: auto
+          sha256sum: true
