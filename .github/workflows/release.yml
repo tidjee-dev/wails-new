@@ -1,9 +1,9 @@
-name: Release
+name: Build & Release
 
 on:
   push:
-    tags:
-      - "v*.*.*" # triggers on version tags like v1.0.0
+    branches:
+      - main
 
 jobs:
   build:
@@ -19,27 +19,48 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: 1.25.1
+
+      - name: Calculate next version
+        id: tag
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+          echo "Last tag: $LAST_TAG"
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "${LAST_TAG#v}"
+          PATCH=$((PATCH + 1))
+          NEXT_TAG="v$MAJOR.$MINOR.$PATCH"
+
+          echo "Next tag: $NEXT_TAG"
+
+          # Save as output for other jobs
+          echo "::set-output name=NEXT_TAG::$NEXT_TAG"
+
+          # Push tag
+          git tag $NEXT_TAG
+          git push origin $NEXT_TAG
 
       - name: Set environment
         run: |
           echo "BINARY_NAME=wails-new" >> $GITHUB_ENV
-          echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Build binary
         run: |
           mkdir -p dist/${{ matrix.os }}-${{ matrix.arch }}
           GOOS=${{ matrix.os }}
           GOARCH=${{ matrix.arch }}
-          go build -o dist/${{ matrix.os }}-${{ matrix.arch }}/$BINARY_NAME ./cmd
+          go build -o dist/${{ matrix.os }}-${{ matrix.arch }}/$BINARY_NAME ./cmd/wails-new
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}-binaries
           path: dist/${{ matrix.os }}-${{ matrix.arch }}/
+
+    outputs:
+      NEXT_TAG: ${{ steps.tag.outputs.NEXT_TAG }}
 
   release:
     name: Create GitHub Release
@@ -55,14 +76,14 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
+          tag_name: ${{ needs.build.outputs.NEXT_TAG }}
+          name: Release ${{ needs.build.outputs.NEXT_TAG }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
         with:
           files: dist/**/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
