@@ -1,1 +1,1 @@
-#
+# Wails New CLI
