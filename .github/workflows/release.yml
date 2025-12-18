@@ -76,8 +76,8 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.build.outputs.NEXT_TAG }}
-          name: Release ${{ needs.build.outputs.NEXT_TAG }}
+          tag_name: ${{ env.NEXT_TAG }}
+          name: Release ${{ env.NEXT_TAG }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
