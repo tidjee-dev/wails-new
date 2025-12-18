@@ -51,7 +51,7 @@ jobs:
           mkdir -p dist/${{ matrix.os }}-${{ matrix.arch }}
           GOOS=${{ matrix.os }}
           GOARCH=${{ matrix.arch }}
-          go build -o dist/${{ matrix.os }}-${{ matrix.arch }}/$BINARY_NAME ./cmd/wails-new
+          go build -o dist/${{ matrix.os }}-${{ matrix.arch }}/$BINARY_NAME .
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
