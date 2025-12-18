@@ -40,7 +40,7 @@ jobs:
 
           # Push tag
           git tag $NEXT_TAG
-          git push origin $NEXT_TAG
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/tidjee-dev/wails-new.git $NEXT_TAG
 
       - name: Set environment
         run: |
