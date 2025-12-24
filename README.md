@@ -23,7 +23,6 @@ It replaces the default Wails frontend with a clean, production-ready setup in s
 
 ## Requirements
 
-- Go ≥ 1.22
 - Wails CLI
 - Node.js / npm
 
