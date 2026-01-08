@@ -6,7 +6,7 @@ const FooterSvelte = `<footer
   <p>
     View source on
     <a
-      href="https://github.com/tidjee-dev"
+      href="https://github.com/tidjee-dev/wails-new"
       target="_blank"
       class="text-blue-400 hover:text-blue-300 underline transition-colors"
     >
