@@ -13,6 +13,9 @@ func WriteAllFiles() error {
 		// Biome configuration
 		"biome.json": embedded.BiomeJSON,
 
+		// README
+		"../README.md": embedded.Readme,
+
 		// Frontend files
 		"src/app.css":                  embedded.AppCSS,
 		"src/App.svelte":               svelte.AppSvelte,
