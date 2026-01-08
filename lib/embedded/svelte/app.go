@@ -1,11 +1,9 @@
 package svelte
 
 const AppSvelte = `<script lang="ts">
-  import Counter from "./components/Counter.svelte";
   import Footer from "./components/Footer.svelte";
   import Help from "./components/Help.svelte";
   import Hero from "./components/Hero.svelte";
-  import Separator from "./components/ui/Separator.svelte";
 </script>
 
 <div
@@ -15,12 +13,6 @@ const AppSvelte = `<script lang="ts">
     class="flex flex-col items-center justify-center px-4 py-16 space-y-12 grow"
   >
     <Hero />
-
-    <Separator />
-
-    <Counter />
-
-    <Separator />
 
     <Help />
   </main>
