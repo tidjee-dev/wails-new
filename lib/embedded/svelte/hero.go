@@ -1,10 +1,6 @@
 package svelte
 
-const HeroSvelte = `<script>
-  import TechIcons from "./TechIcons.svelte";
-</script>
-
-<section
+const HeroSvelte = `<section
   class="flex flex-col items-center justify-center text-center space-y-10"
 >
   <h1
@@ -16,7 +12,5 @@ const HeroSvelte = `<script>
   <p class="text-gray-300 text-base sm:text-lg max-w-lg">
     A modern starter powered by Svelte, Tailwind, Vite, and Wails.
   </p>
-
-  <TechIcons />
 </section>
 `
