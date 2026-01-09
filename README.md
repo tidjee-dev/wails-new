@@ -46,7 +46,7 @@ mv wails-new /usr/local/bin/
 ## Usage
 
 ```bash
-wails-new [options] <project-name>
+wails-new <project-name> [options]
 ```
 
 Example:
@@ -79,28 +79,6 @@ Print all commands without executing them.
 6. Injects predefined backend and frontend boilerplate files
 7. Optionally starts `wails dev`
 
-## Backend Notes
-
-[Backend structure](1.md)
-
-### External URL handling
-
-The generated backend includes a small security guard for opening external URLs
-(e.g. via `runtime.BrowserOpenURL`).
-
-- External URLs are **not trusted by default**
-- Only explicitly allowed hosts can be opened
-- All checks are centralized in:
-
-```plain
-backend/infra/security
-```
-
-This is a **safe-by-default** choice intended for templates and long-lived apps.
-
-If your application does not need this restriction, the check can be
-simplified or removed easily.
-
 ## Generated Project Stack
 
 - **Backend**: Go + Wails
@@ -118,4 +96,4 @@ This tool gives you a clean starting point — not a framework you must obey.
 
 ## License
 
-[MIT](./LICENSE)
+[MIT License](./LICENSE)
