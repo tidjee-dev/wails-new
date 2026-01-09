@@ -22,10 +22,6 @@ func WriteAllEmbeddedTemplates(
 
 		dstPath := filepath.Join(outDir, rel)
 
-		if _, err := os.Stat(dstPath); err == nil {
-			return fmt.Errorf("file already exists: %s", dstPath)
-		}
-
 		content := string(data)
 		for k, v := range tokens {
 			content = strings.ReplaceAll(content, "{{"+k+"}}", v)
