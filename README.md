@@ -19,8 +19,6 @@ production-oriented setup in seconds.
 - Vite-powered frontend
 - **Svelte 5** (JavaScript or TypeScript)
 - **Tailwind CSS 4**
-- Minimal and explicit project structure
-- Small but intentional backend architecture
 - Interactive or non-interactive CLI
 
 ## Requirements
