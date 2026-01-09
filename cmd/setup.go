@@ -86,9 +86,6 @@ Press 'Ctrl+C' to abort.`)
 	// Launch dev mode?
 	if autoYes || tui.Confirm("Run dev mode now?", dryRun) {
 		tui.InfoMsg("Launching development server...")
-		if err := lib.ChangeDir(".."); err != nil {
-			return err
-		}
 		if err := lib.RunCommand("wails", "dev"); err != nil {
 			return err
 		}
