@@ -1,9 +1,8 @@
 <script lang="ts">
-  // import { OpenExternalURL } from "../../wailsjs/go/main/App";
+  import { OpenExternalURL } from "../../wailsjs/go/main/App";
 
   function open(url: string) {
-    window.open(url, "_blank");
-    // OpenExternalURL(url);
+    OpenExternalURL(url);
   }
 </script>
 
