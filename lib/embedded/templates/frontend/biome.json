@@ -1,0 +1,20 @@
+{
+  "linter": {
+    "rules": {
+      "suspicious": {
+        "noAssignInExpressions": "off",
+        "noConsole": {
+          "level": "warn",
+          "options": {
+            "allow": ["assert", "error", "info", "warn"]
+          }
+        },
+        "noExplicitAny": "info"
+      },
+      "correctness": {
+        "noUnusedImports": "off",
+        "noUnusedVariables": "off"
+      }
+    }
+  }
+}

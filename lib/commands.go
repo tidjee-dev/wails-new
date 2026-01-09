@@ -5,6 +5,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/tidjee-dev/wails-new/lib/embedded"
 )
 
 var DryRun = false
@@ -21,4 +23,18 @@ func RunCommand(name string, args ...string) error {
 	cmd.Stdin = os.Stdin
 
 	return cmd.Run()
+}
+
+
+func GenerateProject(projectName string) error {
+	tokens := map[string]string{
+		"ProjectName": projectName,
+	}
+
+	return WriteAllEmbeddedTemplates(
+		embedded.FS,
+		"templates",
+		".",
+		tokens,
+	)
 }

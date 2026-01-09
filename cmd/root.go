@@ -4,6 +4,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/tidjee-dev/wails-new/lib/tui"
 )
 
 var (
@@ -19,7 +21,7 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		projectName := args[0]
 		if err := runSetup(projectName); err != nil {
-			fail(err.Error())
+			tui.Fail(err.Error())
 		}
 	},
 }

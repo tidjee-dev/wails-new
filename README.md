@@ -118,4 +118,4 @@ This tool gives you a clean starting point — not a framework you must obey.
 
 ## License
 
-MIT
+[MIT](./LICENSE)

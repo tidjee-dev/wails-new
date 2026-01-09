@@ -1,6 +1,4 @@
-package svelte
-
-const HelpSvelte = `<div
+<div
   class="max-w-2xl mx-auto bg-zinc-700/60 p-8 rounded-xl shadow-lg backdrop-blur-sm space-y-6"
 >
   <p class="text-center text-lg font-medium">To get started, edit:</p>
@@ -20,4 +18,3 @@ const HelpSvelte = `<div
     </li>
   </ul>
 </div>
-`

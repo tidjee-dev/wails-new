@@ -1,32 +1,66 @@
 package lib
 
 import (
-	"github.com/tidjee-dev/wails-new/lib/embedded"
-	"github.com/tidjee-dev/wails-new/lib/embedded/svelte"
+	"embed"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
-func WriteAllFiles() error {
-	files := map[string]string{
-		// VSCode recommendations
-		".vscode/extensions.json": embedded.VscodeExtensionsJSON,
+func WriteAllEmbeddedTemplates(
+	fs embed.FS,
+	root string, // always "templates"
+	outDir string,
+	tokens map[string]string,
+) error {
+	return walkDir(fs, root, func(srcPath string, data []byte) error {
+		rel, err := filepath.Rel(root, srcPath)
+		if err != nil {
+			return err
+		}
 
-		// Biome configuration
-		"biome.json": embedded.BiomeJSON,
+		dstPath := filepath.Join(outDir, rel)
 
-		// README
-		"../README.md": embedded.Readme,
+		content := string(data)
+		for k, v := range tokens {
+			content = strings.ReplaceAll(content, "{{"+k+"}}", v)
+		}
 
-		// Frontend files
-		"src/app.css":                  embedded.AppCSS,
-		"src/App.svelte":               svelte.AppSvelte,
-		"src/components/Footer.svelte": svelte.FooterSvelte,
-		"src/components/Help.svelte":   svelte.HelpSvelte,
-		"src/components/Hero.svelte":   svelte.HeroSvelte,
-		"vite.config.ts":               embedded.ViteConfig,
+		if err := os.MkdirAll(filepath.Dir(dstPath), 0o755); err != nil {
+			return err
+		}
+
+		return os.WriteFile(dstPath, []byte(content), 0o644)
+	})
+}
+
+func walkDir(
+	fs embed.FS,
+	dir string,
+	fn func(path string, data []byte) error,
+) error {
+	entries, err := fs.ReadDir(dir)
+	if err != nil {
+		return fmt.Errorf("read dir %s: %w", dir, err)
 	}
 
-	for path, content := range files {
-		if err := WriteFile(path, content); err != nil {
+	for _, e := range entries {
+		fullPath := filepath.Join(dir, e.Name())
+
+		if e.IsDir() {
+			if err := walkDir(fs, fullPath, fn); err != nil {
+				return err
+			}
+			continue
+		}
+
+		data, err := fs.ReadFile(fullPath)
+		if err != nil {
+			return fmt.Errorf("read file %s: %w", fullPath, err)
+		}
+
+		if err := fn(fullPath, data); err != nil {
 			return err
 		}
 	}

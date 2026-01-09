@@ -1,6 +1,4 @@
-package svelte
-
-const AppSvelte = `<script lang="ts">
+<script lang="ts">
   import Footer from "./components/Footer.svelte";
   import Help from "./components/Help.svelte";
   import Hero from "./components/Hero.svelte";
@@ -19,4 +17,3 @@ const AppSvelte = `<script lang="ts">
 
   <Footer />
 </div>
-`
