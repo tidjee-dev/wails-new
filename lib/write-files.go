@@ -22,6 +22,10 @@ func WriteAllEmbeddedTemplates(
 
 		dstPath := filepath.Join(outDir, rel)
 
+		if _, err := os.Stat(dstPath); err == nil {
+			return fmt.Errorf("file already exists: %s", dstPath)
+		}
+
 		content := string(data)
 		for k, v := range tokens {
 			content = strings.ReplaceAll(content, "{{"+k+"}}", v)
@@ -47,6 +51,10 @@ func walkDir(
 
 	for _, e := range entries {
 		fullPath := filepath.Join(dir, e.Name())
+
+		if strings.HasPrefix(e.Name(), ".") {
+			continue
+		}
 
 		if e.IsDir() {
 			if err := walkDir(fs, fullPath, fn); err != nil {
