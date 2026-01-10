@@ -1,5 +1,7 @@
 # wails-new
 
+![demo gif](./docs/static/img/wails-new_demo.gif)
+
 ⚡ **Instantly bootstrap a modern Wails desktop app**
 with **Svelte 5**, **Vite**, and **Tailwind CSS 4**.
 
@@ -87,7 +89,6 @@ Print all commands without executing them.
 
 - Minimal over magical
 - Explicit over implicit
-- Safe defaults, easy to remove
 - No hidden abstractions
 
 This tool gives you a clean starting point — not a framework you must obey.
