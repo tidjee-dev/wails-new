@@ -24,13 +24,14 @@ production-oriented setup in seconds.
 - **Svelte 5** (JavaScript or TypeScript)
 - **Tailwind CSS 4**
 - Interactive or non-interactive CLI
-- Minimal `biome.json` configuration
+- Minimal `biome.json` configuration adapt to Svelte
 
 ## Requirements
 
 - Go
 - Wails CLI
 - Node.js / npm
+- Biome CLI (if using biome as formatter and linter)
 
 ## Installation
 
