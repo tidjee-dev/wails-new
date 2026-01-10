@@ -1,5 +1,7 @@
 # wails-new
 
+[![Go](https://img.shields.io/badge/Go-00ADD8?logo=go&logoColor=white)](https://go.dev) [![Wails](https://img.shields.io/badge/Wails-DF0000?logo=wails&logoColor=white)](https://wails.io) [![Svelte](https://img.shields.io/badge/Svelte-FF3E00?logo=svelte&logoColor=white)](https://svelte.dev) [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev) [![Tailwind](https://img.shields.io/badge/TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com) [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org) [![Biome](https://img.shields.io/badge/Biome-60A5FA?logo=biome&logoColor=white)](https://biomejs.dev)
+
 ![demo gif](./docs/static/img/wails-new_demo.gif)
 
 ⚡ **Instantly bootstrap a modern Wails desktop app**
@@ -22,6 +24,7 @@ production-oriented setup in seconds.
 - **Svelte 5** (JavaScript or TypeScript)
 - **Tailwind CSS 4**
 - Interactive or non-interactive CLI
+- Minimal `biome.json` configuration
 
 ## Requirements
 
