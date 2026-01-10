@@ -62,12 +62,11 @@ const config: Config = {
           position: 'left',
           label: 'Docs',
         },
-        {
-          to: '/docs/examples/',
-          position: 'left',
-          label: 'Examples',
-        },
-
+        // {
+        //   to: '/docs/examples/',
+        //   position: 'left',
+        //   label: 'Examples',
+        // },
         {
           href: 'https://github.com/tidjee-dev/wails-new',
           label: 'GitHub',
