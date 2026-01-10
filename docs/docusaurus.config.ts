@@ -15,13 +15,14 @@ const config: Config = {
   baseUrl: '/wails-new/',
   organizationName: 'tidjee-dev',
   projectName: 'wails-new',
+  deploymentBranch: 'gh-pages',
   trailingSlash: true,
 
   onBrokenLinks: 'throw',
 
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'fr'],
+    locales: ['en'],
   },
 
   scripts: [
