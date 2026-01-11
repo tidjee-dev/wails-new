@@ -11,8 +11,8 @@ import (
 
 var requiredTools = []string{"wails", "npm"}
 
-func runSetup(projectName string) error {
-	lib.DryRun = dryRun
+func runSetup(opts SetupOptions) error {
+	lib.DryRun = opts.DryRun
 
 	tui.Header()
 
@@ -24,8 +24,8 @@ func runSetup(projectName string) error {
 Press 'Enter' to accept defaults.
 Press 'Ctrl+C' to abort.`)
 
-	if _, err := os.Stat(projectName); err == nil {
-		tui.Fail("Directory already exists for this name: " + projectName)
+	if _, err := os.Stat(opts.ProjectName); err == nil {
+		tui.Fail("Directory already exists for this name: " + opts.ProjectName)
 	}
 
 	// Check required tools
@@ -36,23 +36,23 @@ Press 'Ctrl+C' to abort.`)
 
 	// Init Wails
 	tui.Task("Initializing Wails project...")
-	if err := lib.RunCommand("wails", "init", "-n", projectName); err != nil {
+	if err := lib.RunCommand("wails", "init", "-n", opts.ProjectName); err != nil {
 		return err
 	}
 
 	// Remove default frontend and switch dir
-	if err := lib.RemoveFolder(filepath.Join(projectName, "frontend")); err != nil {
+	if err := lib.RemoveFolder(filepath.Join(opts.ProjectName, "frontend")); err != nil {
 		return err
 	}
-	if err := lib.ChangeDir(projectName); err != nil {
+	if err := lib.ChangeDir(opts.ProjectName); err != nil {
 		return err
 	}
 
 	// Frontend template selection
 	template := "svelte"
-	if useTS || (autoYes && useTS) {
+	if opts.UseTS || (opts.AutoYes && opts.UseTS) {
 		template = "svelte-ts"
-	} else if !autoYes && tui.Confirm("Use TypeScript?", dryRun) {
+	} else if !opts.AutoYes && tui.Confirm("Use TypeScript?", opts.DryRun) {
 		template = "svelte-ts"
 	}
 
@@ -79,20 +79,20 @@ Press 'Ctrl+C' to abort.`)
 	if err := lib.ChangeDir(".."); err != nil {
 		return err
 	}
-	if err := lib.GenerateProject(projectName); err != nil {
+	if err := lib.GenerateProject(opts.ProjectName, opts.UseAuth); err != nil {
 		return err
 	}
 
 	// Launch dev mode?
-	if autoYes || tui.Confirm("Run dev mode now?", dryRun) {
+	if opts.AutoYes || tui.Confirm("Run dev mode now?", opts.DryRun) {
 		tui.InfoMsg("Launching development server...")
 		if err := lib.RunCommand("wails", "dev"); err != nil {
 			return err
 		}
 	} else {
 		tui.SuccessMsg("Setup complete.")
-		tui.InfoMsg(fmt.Sprintf("To start development server:\n    cd %s\n    wails dev", projectName))
-		tui.InfoMsg(fmt.Sprintf("To build your app:\n    cd %s\n    wails build", projectName))
+		tui.InfoMsg(fmt.Sprintf("To start development server:\n    cd %s\n    wails dev", opts.ProjectName))
+		tui.InfoMsg(fmt.Sprintf("To build your app:\n    cd %s\n    wails build", opts.ProjectName))
 	}
 
 	return nil

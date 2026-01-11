@@ -12,7 +12,16 @@ var (
 	autoYes bool
 	dryRun  bool
 	useTS   bool
+	useAuth bool
 )
+
+type SetupOptions struct {
+	ProjectName string
+	AutoYes     bool
+	DryRun      bool
+	UseTS       bool
+	UseAuth     bool
+}
 
 var rootCmd = &cobra.Command{
 	Use:   "wails-new [project-name]",
@@ -20,7 +29,16 @@ var rootCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		projectName := args[0]
-		if err := runSetup(projectName); err != nil {
+
+		opts := SetupOptions{
+			ProjectName: projectName,
+			AutoYes:     autoYes,
+			DryRun:      dryRun,
+			UseTS:       useTS,
+			UseAuth:     useAuth,
+		}
+
+		if err := runSetup(opts); err != nil {
 			tui.Fail(err.Error())
 		}
 	},
@@ -36,4 +54,5 @@ func init() {
 	rootCmd.Flags().BoolVarP(&autoYes, "non-interactive", "", false, "Accept defaults (non-interactive)")
 	rootCmd.Flags().BoolVarP(&dryRun, "dry-run", "", false, "Print commands without executing them")
 	rootCmd.Flags().BoolVarP(&useTS, "ts", "", false, "Use TypeScript for frontend")
+	rootCmd.Flags().BoolVarP(&useAuth, "auth", "", false, "Include authentication")
 }

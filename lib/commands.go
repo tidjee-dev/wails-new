@@ -25,15 +25,19 @@ func RunCommand(name string, args ...string) error {
 	return cmd.Run()
 }
 
-
-func GenerateProject(projectName string) error {
+func GenerateProject(projectName string, auth bool) error {
 	tokens := map[string]string{
 		"ProjectName": projectName,
 	}
 
+	template := "minimal"
+
+	if auth {
+		template = "with-auth"
+	}
 	return WriteAllEmbeddedTemplates(
 		embedded.FS,
-		"templates",
+		template,
 		".",
 		tokens,
 	)

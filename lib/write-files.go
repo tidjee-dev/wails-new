@@ -10,7 +10,7 @@ import (
 
 func WriteAllEmbeddedTemplates(
 	fs embed.FS,
-	root string, // always "templates"
+	root string, // root directory in the template
 	outDir string,
 	tokens map[string]string,
 ) error {
