@@ -9,7 +9,28 @@ import (
 	"github.com/tidjee-dev/wails-new/lib/tui"
 )
 
-var requiredTools = []string{"wails", "npm"}
+var requiredTools = []lib.ToolRequirement{
+	{
+		Name:        "go",
+		VersionArgs: []string{"version"},
+		MinVersion:  "1.23.3",
+	},
+	{
+		Name:        "wails",
+		VersionArgs: []string{"version"},
+		MinVersion:  "2.11.0",
+	},
+	{
+		Name:        "node",
+		VersionArgs: []string{"--version"},
+		MinVersion:  "24.12.0",
+	},
+	{
+		Name:        "npm",
+		VersionArgs: []string{"--version"},
+		MinVersion:  "11.6.2",
+	},
+}
 
 func runSetup(opts SetupOptions) error {
 	lib.DryRun = opts.DryRun
@@ -32,6 +53,8 @@ Press 'Ctrl+C' to abort.`)
 	tui.Task("Checking required tools...")
 	if err := lib.CheckTools(requiredTools); err != nil {
 		return err
+	} else {
+		tui.SuccessMsg("All required tools are installed.")
 	}
 
 	// Init Wails
@@ -75,11 +98,11 @@ Press 'Ctrl+C' to abort.`)
 	_ = lib.RemoveFile("src/lib/Counter.svelte")
 
 	// Write embedded boilerplate
-	tui.Task("Injecting boilerplate files...")
 	if err := lib.ChangeDir(".."); err != nil {
 		return err
 	}
-	if err := lib.GenerateProject(opts.ProjectName, opts.UseAuth); err != nil {
+	tui.Task("Injecting boilerplate files...")
+	if err := lib.GenerateProject(opts.ProjectName, opts.UseAuth, opts.DryRun); err != nil {
 		return err
 	}
 

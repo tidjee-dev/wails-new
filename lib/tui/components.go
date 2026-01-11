@@ -19,8 +19,8 @@ func Header() {
 func Confirm(question string, dryRun bool) bool {
 	if dryRun {
 		fmt.Println(LabelStyle.Render("\n" + question + " (y/n):"))
-		fmt.Println(InfoStyle.Render("> [dry-run] assuming yes"))
-		return true
+		fmt.Println(InfoStyle.Render("> [dry-run] assuming no"))
+		return false
 	}
 
 	for {

@@ -54,5 +54,5 @@ func init() {
 	rootCmd.Flags().BoolVarP(&autoYes, "non-interactive", "", false, "Accept defaults (non-interactive)")
 	rootCmd.Flags().BoolVarP(&dryRun, "dry-run", "", false, "Print commands without executing them")
 	rootCmd.Flags().BoolVarP(&useTS, "ts", "", false, "Use TypeScript for frontend")
-	rootCmd.Flags().BoolVarP(&useAuth, "auth", "", false, "Include authentication")
+	rootCmd.Flags().BoolVarP(&useAuth, "auth", "", false, "Include authentication (user login/logout, registration, dashboard, etc.)")
 }
